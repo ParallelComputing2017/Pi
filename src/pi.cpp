@@ -7,8 +7,10 @@
 #include <stdio.h>
 #include <math.h>
 #include <pthread.h>
-#define NUM_RECT 100000000
+
+#define NUM_RECT 1e9
 #define NUM_THREADS 4
+
 double gPi = 0.0;  //  global accumulator for pi
 pthread_mutex_t gLock;
 
@@ -43,6 +45,7 @@ int Pi() {
 				(void *) i);        // Data for Area()
 	}
 	for (i = 0; i < NUM_THREADS; ++i) {
+		// wait for thread termination
 		pthread_join(threads[i], NULL);
 	}
 	gPi *= 2.0;
