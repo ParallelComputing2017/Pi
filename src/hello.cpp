@@ -3,8 +3,6 @@
  * DESCRIPTION:
  *   A "hello world" Pthreads program.  Demonstrates thread creation and
  *   termination.
- * AUTHOR: Blaise Barney
- * LAST REVISED: 08/09/11
  ******************************************************************************/
 #include <pthread.h>
 #include <stdio.h>
@@ -18,7 +16,7 @@ void *PrintHello(void *threadid) {
 	pthread_exit(NULL);
 }
 
-int main(int argc, char *argv[]) {
+int hello() {
 	pthread_t threads[NUM_THREADS];
 	int rc;
 	long t;
