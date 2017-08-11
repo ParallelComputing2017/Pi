@@ -9,24 +9,24 @@
 #include <pthread.h>
 
 #define ITERATIONS 1e9
-#define NUM_THREADS 4
+#define NUM_THREADS 1
 
 double piTotal[NUM_THREADS];
 
 void *calculatePi(void *arg) {
-	long threadid = *(int*) arg;
+	int threadid = *(int*) arg;
 	int initIteration, endIteration;
 	initIteration = (ITERATIONS / NUM_THREADS) * threadid;
 	endIteration = initIteration + (ITERATIONS / NUM_THREADS) - 1;
 
-	int i = threadid;
+	piTotal[threadid] = 0.0;
 
 	do {
 		// The alternative (pow) takes more time in the processor.
-		piTotal[i] = piTotal[i] + (4.0 / (initIteration * 2 + 1));
-		i++;
-		piTotal[i] = piTotal[i] - (4.0 / (initIteration * 2 + 1));
-		i++;
+		piTotal[threadid] = piTotal[threadid] + (4.0 / (initIteration * 2 + 1));
+		initIteration++;
+		piTotal[threadid] = piTotal[threadid] - (4.0 / (initIteration * 2 + 1));
+		initIteration++;
 	} while (initIteration < endIteration);
 
 	return 0;
@@ -34,7 +34,7 @@ void *calculatePi(void *arg) {
 
 int Pi2() {
 
-	printf("Start PI\n");
+	printf("Start PI (NUM_THREADS = %i)\n", NUM_THREADS);
 
 	pthread_t threads[NUM_THREADS];
 	int threadId[NUM_THREADS], i, *retval;
