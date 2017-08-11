@@ -8,6 +8,8 @@
 #ifndef PI_HPP_
 #define PI_HPP_
 
-int Pi2();
+int Pi2(int THREADS);
+
+double secuencialPi();
 
 #endif /* PI_HPP_ */

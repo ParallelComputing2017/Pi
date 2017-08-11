@@ -9,9 +9,10 @@
 #include <pthread.h>
 
 #define ITERATIONS 1e9
-#define NUM_THREADS 1
 
-double piTotal[NUM_THREADS];
+int NUM_THREADS = 1;
+
+double *piTotal;
 
 void *calculatePi(void *arg) {
 	int threadid = *(int*) arg;
@@ -32,7 +33,11 @@ void *calculatePi(void *arg) {
 	return 0;
 }
 
-int Pi2() {
+int Pi2(int THREADS) {
+
+	// GLOBAL VARIABLES
+	NUM_THREADS = THREADS;
+	piTotal = new double[NUM_THREADS];
 
 	printf("Start PI (NUM_THREADS = %i)\n", NUM_THREADS);
 
@@ -53,5 +58,27 @@ int Pi2() {
 	}
 
 	printf("Computed value of Pi:  %12.9f\n", piTotal[0]);
+
+	// DELETE block
+	delete[] piTotal;
+
+	return 0;
+}
+
+double secuencialPi() {
+	int initIteration, endIteration;
+	initIteration = 0;
+	endIteration = ITERATIONS - 1;
+
+	double pi = 0.0;
+
+	do {
+		// The alternative (pow) takes more time in the processor.
+		pi = pi + (4.0 / (initIteration * 2 + 1));
+		initIteration++;
+		pi = pi - (4.0 / (initIteration * 2 + 1));
+		initIteration++;
+	} while (initIteration < endIteration);
+
 	return 0;
 }
