@@ -65,7 +65,7 @@ double parallelPi(int THREADS) {
 	return pi;
 }
 
-double secuencialPi() {
+double sequentialPi() {
 	int initIteration, endIteration;
 	initIteration = 0;
 	endIteration = ITERATIONS - 1;

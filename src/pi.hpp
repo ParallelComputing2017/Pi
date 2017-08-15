@@ -10,6 +10,6 @@
 
 double parallelPi(int THREADS);
 
-double secuencialPi();
+double sequentialPi();
 
 #endif /* PI_HPP_ */
