@@ -8,48 +8,77 @@
 #include <math.h>
 #include <pthread.h>
 
-#define NUM_RECT 1e9
-#define NUM_THREADS 4
+#define ITERATIONS 1e9
 
-double gPi = 0.0;  //  global accumulator for pi
-pthread_mutex_t gLock;
+int NUM_THREADS = 1;
 
-void *Area(void *threadid) {
-	long tId;
-	tId = (long) threadid;
-	double h = 2.0 / NUM_RECT;
-	double partialSum = 0.0, x;  // local to each thread
+double *piTotal;
 
-	// use every NUMTHREADS-th ste
-	for (int i = tId; i < NUM_RECT; i += NUM_THREADS) {
-		x = -1 + (i + 0.5f) * h;
-		partialSum += sqrt(1.0 - x * x) * h;
-	}
-	pthread_mutex_lock(&gLock);
-	gPi += partialSum;  // add partial to global final answer
-	pthread_mutex_unlock(&gLock);
+void *calculatePi(void *arg) {
+	int threadid = *(int*) arg;
+	int initIteration, endIteration;
+	initIteration = (ITERATIONS / NUM_THREADS) * threadid;
+	endIteration = initIteration + (ITERATIONS / NUM_THREADS) - 1;
+
+	piTotal[threadid] = 0.0;
+
+	do {
+		// The alternative (pow) takes more time in the processor.
+		piTotal[threadid] = piTotal[threadid] + (4.0 / (initIteration * 2 + 1));
+		initIteration++;
+		piTotal[threadid] = piTotal[threadid] - (4.0 / (initIteration * 2 + 1));
+		initIteration++;
+	} while (initIteration < endIteration);
+
 	return 0;
 }
 
-int Pi() {
+double parallelPi(int THREADS) {
 
-	printf("Start PI\n");
+	// GLOBAL VARIABLES
+	NUM_THREADS = THREADS;
+	piTotal = new double[NUM_THREADS];
+
+	printf("Start Parallel PI (NUM_THREADS = %i)\n", NUM_THREADS);
 
 	pthread_t threads[NUM_THREADS];
-	long  i;
-	pthread_mutex_init(&gLock, NULL);
-	for (i = 0; i < NUM_THREADS; ++i) {
-		pthread_create(&threads[i],           // Returned thread handle
-				NULL,                 // Thread Attributes
-				Area,                   // Thread function
-				(void *) i);        // Data for Area()
+	int threadId[NUM_THREADS], i, *retval;
+
+	for (i = 0; i < NUM_THREADS; i++) {
+		threadId[i] = i;
+		pthread_create(&threads[i], NULL, calculatePi, &threadId[i]);
 	}
-	for (i = 0; i < NUM_THREADS; ++i) {
+	for (i = 0; i < NUM_THREADS; i++) {
 		// wait for thread termination
-		pthread_join(threads[i], NULL);
+		pthread_join(threads[i], (void**) &retval);
 	}
-	gPi *= 2.0;
-	printf("Computed value of Pi:  %12.9f\n", gPi);
-	pthread_mutex_destroy(&gLock);
-	return 0;
+
+	for (i = 1; i < NUM_THREADS; i++) {
+		piTotal[0] = piTotal[0] + piTotal[i];
+	}
+
+	double pi = piTotal[0];
+
+	// DELETE block
+	delete[] piTotal;
+
+	return pi;
+}
+
+double secuencialPi() {
+	int initIteration, endIteration;
+	initIteration = 0;
+	endIteration = ITERATIONS - 1;
+
+	double pi = 0.0;
+
+	do {
+		// The alternative (pow) takes more time in the processor.
+		pi = pi + (4.0 / (initIteration * 2 + 1));
+		initIteration++;
+		pi = pi - (4.0 / (initIteration * 2 + 1));
+		initIteration++;
+	} while (initIteration < endIteration);
+
+	return pi;
 }

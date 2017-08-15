@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#include "pi2.hpp"
+#include "pi.hpp"
 
 int main(int argc, char *argv[]) {
 	int threads = 4;
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 	printf("Secuencial Pi %f \n", secuencialPi());
 
 	printf("Using %i threads \n", threads);
-	printf("Parallel Pi %f \n", Pi2(threads));
+	printf("Parallel Pi %f \n", parallelPi(threads));
 
 	return 0;
 
