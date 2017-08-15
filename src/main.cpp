@@ -15,12 +15,16 @@ int main(int argc, char *argv[]) {
 	int threads = 4;
 	if (argc != 2) { // argc should be 2 for correct execution
 		// We print argv[0] assuming it is the program name
-		printf("Usage %i <num_threads>\n", argv[0]);
+		printf("Usage <program_name> <num_threads>\n");
+	} else {
+		threads = atoi(argv[1]);
 	}
-	printf("secuencialPi %i \n", secuencialPi);
+	printf("Secuencial Pi %f \n", secuencialPi());
 
-	threads = atoi(argv[1]);
-	return Pi2(threads);
+	printf("Using %i threads \n", threads);
+	printf("Parallel Pi %f \n", Pi2(threads));
+
+	return 0;
 
 }
 

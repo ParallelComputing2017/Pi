@@ -80,5 +80,5 @@ double secuencialPi() {
 		initIteration++;
 	} while (initIteration < endIteration);
 
-	return 0;
+	return pi;
 }
