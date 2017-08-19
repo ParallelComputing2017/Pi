@@ -7,6 +7,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <iostream>
+#include <chrono>
+
+typedef std::chrono::high_resolution_clock Clock;
+typedef std::chrono::milliseconds ms;
+typedef std::chrono::duration<float> fsec;
 
 using namespace std;
 
@@ -15,6 +21,8 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
 	int threads = 0;
+	auto t1 = Clock::now();
+
 
 	if (argc != 3) { // argc should be 3 for correct execution
 		printf("Usage: Posix <program_name> <num_threads> \n");
@@ -38,6 +46,12 @@ int main(int argc, char *argv[]) {
 		}
 
 	}
+
+	// Timer
+	auto t2 = Clock::now();
+	fsec fs = t2 - t1;
+	cout << "Delta time: " << chrono::duration<float>(t2 - t1).count()
+			<< " seconds" << endl;
 
 	return 0;
 
