@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 	// Timer
 	auto t2 = Clock::now();
 	fsec fs = t2 - t1;
-	cout << "Delta time: " << chrono::duration<float>(t2 - t1).count()
+	cout << "Running time: " << chrono::duration<float>(t2 - t1).count()
 			<< " seconds" << endl;
 
 	return 0;
