@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#include "pi.hpp"
+#include "pi/pi.hpp"
 
 int main(int argc, char *argv[]) {
 
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 		printf("Usage: Posix <program_name> <num_threads> \n");
 		printf("\t num_threads = 0 for sequential mode \n");
 
-		printf("Parallel Pi %f \n", parallelPi(4));
+		printf("Parallel Pi: %f \n", parallelPi(4));
 
 	} else {
 		string self(argv[0]);
@@ -31,9 +31,9 @@ int main(int argc, char *argv[]) {
 
 		if (program.compare("pi") == 0) {
 			if (threads == 0) {
-				printf("Sequential Pi %f \n", sequentialPi());
+				printf("Sequential Pi: %f \n", sequentialPi());
 			} else {
-				printf("Parallel Pi %f \n", parallelPi(threads));
+				printf("Parallel Pi: %f \n", parallelPi(threads));
 			}
 		}
 

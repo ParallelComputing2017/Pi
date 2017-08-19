@@ -5,11 +5,11 @@
  *      Author: juan
  */
 
-#ifndef PI_HPP_
-#define PI_HPP_
+#ifndef PI_PI_HPP_
+#define PI_PI_HPP_
 
 double parallelPi(int THREADS);
 
 double sequentialPi();
 
-#endif /* PI_HPP_ */
+#endif /* PI_PI_HPP_ */
