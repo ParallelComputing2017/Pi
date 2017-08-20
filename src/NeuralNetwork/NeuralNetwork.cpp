@@ -39,7 +39,7 @@ void TrainingData::getTopology(vector<unsigned> &topology) {
 	stringstream ss(line);
 	ss >> label;
 	if (this->isEof() || label.compare("topology:") != 0) {
-		abort();
+		throw invalid_argument("Topology not found");
 	}
 
 	while (!ss.eof()) {
@@ -234,7 +234,7 @@ void Net::getResults(vector<double> &resultVals) const {
 }
 
 void Net::backProp(const std::vector<double> &targetVals) {
-	// Calculate overal net error (RMS of output neuron errors)
+	// Calculate overal net error (RMS, Root Mean Square Error, of output neuron errors)
 
 	Layer &outputLayer = m_layers.back();
 	m_error = 0.0;
@@ -298,6 +298,9 @@ void Net::feedForward(const vector<double> &inputVals) {
 	}
 }
 Net::Net(const vector<unsigned> &topology) {
+	m_error = 0.0;
+	m_recentAverageError = 0.0;
+
 	unsigned numLayers = topology.size();
 	for (unsigned layerNum = 0; layerNum < numLayers; ++layerNum) {
 		m_layers.push_back(Layer());
@@ -327,7 +330,7 @@ void showVectorVals(string label, vector<double> &v) {
 	cout << endl;
 }
 int runNeuralNet() {
-	TrainingData trainData("trainingData.txt");
+	TrainingData trainData("src/NeuralNetwork/trainingData.txt");
 	//e.g., {3, 2, 1 }
 	vector<unsigned> topology;
 	//topology.push_back(3);
@@ -367,6 +370,7 @@ int runNeuralNet() {
 
 	cout << endl << "Done" << endl;
 
+	return 0;
 }
 
 

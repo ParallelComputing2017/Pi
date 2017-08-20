@@ -17,6 +17,7 @@ typedef std::chrono::duration<float> fsec;
 using namespace std;
 
 #include "pi/pi.hpp"
+#include "NeuralNetwork/NeuralNetwork.hpp"
 
 int main(int argc, char *argv[]) {
 
@@ -28,7 +29,7 @@ int main(int argc, char *argv[]) {
 		printf("Usage: Posix <program_name> <num_threads> \n");
 		printf("\t num_threads = 0 for sequential mode \n");
 
-		printf("Parallel Pi: %f \n", parallelPi(4));
+		printf("Neural Net: %i \n", runNeuralNet());
 
 	} else {
 		string self(argv[0]);
