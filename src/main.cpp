@@ -21,7 +21,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
-	int threads = 0;
+	int threads = 4;
 	auto t1 = Clock::now();
 
 
@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 		printf("Usage: Posix <program_name> <num_threads> \n");
 		printf("\t num_threads = 0 for sequential mode \n");
 
-		printf("Neural Net: %i \n", runNeuralNet());
+		printf("Pi: %f \n", parallelPi(threads));
 
 	} else {
 		string self(argv[0]);
@@ -44,6 +44,8 @@ int main(int argc, char *argv[]) {
 			} else {
 				printf("Parallel Pi: %f \n", parallelPi(threads));
 			}
+		} else {
+			printf("Neural Net: %i \n", runNeuralNet());
 		}
 
 	}

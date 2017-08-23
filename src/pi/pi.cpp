@@ -8,27 +8,34 @@
 #include <math.h>
 #include <pthread.h>
 
+/* Constants */
 #define ITERATIONS 1e9
 
+/* Global variables */
 int NUM_THREADS = 1;
-
 double *piTotal;
 
-void *calculatePi(void *arg) {
+
+double calcPi(int initIteration, int endIteration) {
+	double pi = 0.0;
+	do {
+		// The alternative (pow) takes more time in the processor.
+		pi = pi + (4.0 / (initIteration * 2 + 1));
+		initIteration++;
+		pi = pi - (4.0 / (initIteration * 2 + 1));
+		initIteration++;
+	} while (initIteration < endIteration);
+
+	return pi;
+}
+
+void *calcPi(void *arg) {
 	int threadid = *(int*) arg;
 	int initIteration, endIteration;
 	initIteration = (ITERATIONS / NUM_THREADS) * threadid;
 	endIteration = initIteration + (ITERATIONS / NUM_THREADS) - 1;
 
-	piTotal[threadid] = 0.0;
-
-	do {
-		// The alternative (pow) takes more time in the processor.
-		piTotal[threadid] = piTotal[threadid] + (4.0 / (initIteration * 2 + 1));
-		initIteration++;
-		piTotal[threadid] = piTotal[threadid] - (4.0 / (initIteration * 2 + 1));
-		initIteration++;
-	} while (initIteration < endIteration);
+	piTotal[threadid] = calcPi(initIteration, endIteration);
 
 	return 0;
 }
@@ -46,7 +53,7 @@ double parallelPi(int THREADS) {
 
 	for (i = 0; i < NUM_THREADS; i++) {
 		threadId[i] = i;
-		pthread_create(&threads[i], NULL, calculatePi, &threadId[i]);
+		pthread_create(&threads[i], NULL, calcPi, &threadId[i]);
 	}
 	for (i = 0; i < NUM_THREADS; i++) {
 		// wait for thread termination
@@ -66,19 +73,7 @@ double parallelPi(int THREADS) {
 }
 
 double sequentialPi() {
-	int initIteration, endIteration;
-	initIteration = 0;
-	endIteration = ITERATIONS - 1;
-
-	double pi = 0.0;
-
-	do {
-		// The alternative (pow) takes more time in the processor.
-		pi = pi + (4.0 / (initIteration * 2 + 1));
-		initIteration++;
-		pi = pi - (4.0 / (initIteration * 2 + 1));
-		initIteration++;
-	} while (initIteration < endIteration);
-
-	return pi;
+	return calcPi(0, ITERATIONS - 1);
 }
+
+
