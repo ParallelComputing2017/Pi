@@ -1,11 +1,6 @@
 # Build folders
 /Debug/
 
-# Eclipse settings
-/.cproject
-/.project
-/.settings/
-
 # Prerequisites
 *.d
 
