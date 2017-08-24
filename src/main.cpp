@@ -10,6 +10,9 @@
 #include <iostream>
 #include <chrono>
 
+#include <iostream>
+#include <fstream>
+
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::milliseconds ms;
 typedef std::chrono::duration<float> fsec;
@@ -19,22 +22,24 @@ using namespace std;
 #include "pi/pi.hpp"
 #include "NeuralNetwork/NeuralNetwork.hpp"
 
+void writeCSV(string program, int threads, float runningTime);
+
 int main(int argc, char *argv[]) {
 
 	int threads = 4;
-	auto t1 = Clock::now();
-
+	string self(argv[0]);
+	string program = "pi";
 
 	if (argc != 3) { // argc should be 3 for correct execution
 		printf("Usage: Posix <program_name> <num_threads> \n");
 		printf("\t num_threads = 0 for sequential mode \n");
 
-		printf("Pi: %f \n", parallelPi(threads));
-
 	} else {
-		string self(argv[0]);
-		string program(argv[1]);
+		program = argv[1];
 		threads = atoi(argv[2]);
+	}
+
+	auto t1 = Clock::now();
 
 		printf("Using %i threads \n", threads);
 
@@ -48,15 +53,28 @@ int main(int argc, char *argv[]) {
 			printf("Neural Net: %i \n", runNeuralNet());
 		}
 
-	}
 
 	// Timer
 	auto t2 = Clock::now();
 	fsec fs = t2 - t1;
-	cout << "Running time: " << chrono::duration<float>(t2 - t1).count()
-			<< " seconds" << endl;
+
+	writeCSV(program, threads, fs.count());
 
 	return 0;
 
+}
+
+void writeCSV(string program, int threads, float seconds_runningTime) {
+
+	ofstream myfile;
+
+	myfile.open("./log/" + program + ".csv", std::ofstream::app);
+
+	myfile << "\"" + program + "\"";
+	myfile << "; " + to_string(threads);
+	myfile << "; " + to_string(seconds_runningTime);
+	myfile << "\n";
+
+	myfile.close();
 }
 
