@@ -12,6 +12,7 @@
 #include <cmath>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 using namespace std;
 
@@ -145,5 +146,4 @@ int runNeuralNet() {
 
 	return 0;
 }
-
 

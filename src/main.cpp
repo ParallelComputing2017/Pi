@@ -41,18 +41,17 @@ int main(int argc, char *argv[]) {
 
 	auto t1 = Clock::now();
 
-		printf("Using %i threads \n", threads);
+	printf("Using %i threads \n", threads);
 
-		if (program.compare("pi") == 0) {
-			if (threads == 0) {
-				printf("Sequential Pi: %f \n", sequentialPi());
-			} else {
-				printf("Parallel Pi: %f \n", parallelPi(threads));
-			}
+	if (program.compare("pi") == 0) {
+		if (threads == 0) {
+			printf("Sequential Pi: %f \n", sequentialPi());
 		} else {
-			printf("Neural Net: %i \n", runNeuralNet());
+			printf("Parallel Pi: %f \n", parallelPi(threads));
 		}
-
+	} else {
+		printf("Neural Net: %i \n", runNeuralNet());
+	}
 
 	// Timer
 	auto t2 = Clock::now();
