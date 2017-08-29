@@ -8,15 +8,14 @@
 #include <math.h>
 #include <pthread.h>
 
-/* Constants */
-#define ITERATIONS 1e9
+#include "pi.hpp"
 
 /* Global variables */
 int NUM_THREADS = 1;
 double *piTotal;
 
 
-double calcPi(int initIteration, int endIteration) {
+double calculatePi(int initIteration, int endIteration) {
 	double pi = 0.0;
 	do {
 		// The alternative (pow) takes more time in the processor.
@@ -35,15 +34,15 @@ void *calcPi(void *arg) {
 	initIteration = (ITERATIONS / NUM_THREADS) * threadid;
 	endIteration = initIteration + (ITERATIONS / NUM_THREADS) - 1;
 
-	piTotal[threadid] = calcPi(initIteration, endIteration);
+	piTotal[threadid] = calculatePi(initIteration, endIteration);
 
 	return 0;
 }
 
-double parallelPi(int THREADS) {
+double Pi::posix(int numThreads) {
 
 	// GLOBAL VARIABLES
-	NUM_THREADS = THREADS;
+	NUM_THREADS = numThreads;
 	piTotal = new double[NUM_THREADS];
 
 	printf("Start Parallel PI (NUM_THREADS = %i)\n", NUM_THREADS);
@@ -72,8 +71,29 @@ double parallelPi(int THREADS) {
 	return pi;
 }
 
-double sequentialPi() {
-	return calcPi(0, ITERATIONS - 1);
+double Pi::sequential() {
+	return calculatePi(0, ITERATIONS - 1);
+}
+
+double Pi::openMP(int numThreads) {
+
+	double pi = 0.0;
+
+	int start = 0, end = ITERATIONS - 1;
+
+#pragma omp parallel num_threads(numThreads)
+	{
+#pragma omp for reduction(+:pi)
+		for (int i = start; i < end; i++) {
+			// The alternative (pow) takes more time in the processor.
+			pi = pi + (4.0 / (i * 2 + 1));
+			i++;
+			pi = pi - (4.0 / (i * 2 + 1));
+
+		}
+	}
+
+	return pi;
 }
 
 

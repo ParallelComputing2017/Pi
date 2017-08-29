@@ -8,6 +8,21 @@
 #ifndef PI_PI_HPP_
 #define PI_PI_HPP_
 
+/* Constants */
+#define ITERATIONS 1e9
+
+class Pi {
+public:
+	static double sequential();
+
+	static double posix(int numThreads);
+
+	static double openMP(int numThreads);
+
+private:
+
+};
+
 double parallelPi(int THREADS);
 
 double sequentialPi();

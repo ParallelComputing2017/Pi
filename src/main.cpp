@@ -45,9 +45,11 @@ int main(int argc, char *argv[]) {
 
 	if (program.compare("pi") == 0) {
 		if (threads == 0) {
-			printf("Sequential Pi: %f \n", sequentialPi());
+			printf("Sequential Pi: %f \n", Pi::sequential());
 		} else {
-			printf("Parallel Pi: %f \n", parallelPi(threads));
+			printf("Parallel Posix Pi: %f \n", Pi::posix(threads));
+
+			printf("Parallel OpenMP Pi: %f \n", Pi::openMP(threads));
 		}
 	} else {
 		printf("Neural Net: %i \n", runNeuralNet());
