@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 		}
 	} else {
 
-		printf("Neural Net: %i \n", mainExample1());
+		printf("Neural Net: %i \n", mainExample());
 	}
 
 	// Timer
