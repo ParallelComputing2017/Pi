@@ -22,6 +22,8 @@ using namespace std;
 #include "pi/pi.hpp"
 #include "NeuralNetwork/NeuralNetwork.hpp"
 
+#include "../lib/simple_cnn/Example_MNIST/example.h"
+
 void writeCSV(string program, int threads, float runningTime);
 
 int main(int argc, char *argv[]) {
@@ -52,7 +54,8 @@ int main(int argc, char *argv[]) {
 			printf("Parallel OpenMP Pi: %f \n", Pi::openMP(threads));
 		}
 	} else {
-		printf("Neural Net: %i \n", runNeuralNet());
+
+		printf("Neural Net: %i \n", mainExample1());
 	}
 
 	// Timer

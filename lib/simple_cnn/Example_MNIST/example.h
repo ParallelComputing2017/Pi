@@ -12,8 +12,7 @@ using namespace std;
 
 float train( vector<layer_t*>& layers, tensor_t<float>& data, tensor_t<float>& expected )
 {
-	for ( int i = 0; i < layers.size(); i++ )
-	{
+	for (int i = 0; i < layers.size(); i++) {
 		if ( i == 0 )
 			activate( layers[i], data );
 		else
@@ -22,16 +21,14 @@ float train( vector<layer_t*>& layers, tensor_t<float>& data, tensor_t<float>& e
 
 	tensor_t<float> grads = layers.back()->out - expected;
 
-	for ( int i = layers.size() - 1; i >= 0; i-- )
-	{
+	for (int i = layers.size() - 1; i >= 0; i--) {
 		if ( i == layers.size() - 1 )
 			calc_grads( layers[i], grads );
 		else
 			calc_grads( layers[i], layers[i + 1]->grads_in );
 	}
 
-	for ( int i = 0; i < layers.size(); i++ )
-	{
+	for (int i = 0; i < layers.size(); i++) {
 		fix_weights( layers[i] );
 	}
 
@@ -48,7 +45,7 @@ float train( vector<layer_t*>& layers, tensor_t<float>& data, tensor_t<float>& e
 
 void forward( vector<layer_t*>& layers, tensor_t<float>& data )
 {
-	for ( int i = 0; i < layers.size(); i++ )
+	for (int i = 0; i < layers.size(); i++)
 	{
 		if ( i == 0 )
 			activate( layers[i], data );
@@ -81,12 +78,12 @@ vector<case_t> read_test_cases()
 {
 	vector<case_t> cases;
 
-	uint8_t* train_image = read_file( "train-images.idx3-ubyte" );
-	uint8_t* train_labels = read_file( "train-labels.idx1-ubyte" );
+	uint8_t* train_image = read_file("data/mnist/train-images.idx3-ubyte");
+	uint8_t* train_labels = read_file("data/mnist/train-labels.idx1-ubyte");
 
 	uint32_t case_count = byteswap_uint32( *(uint32_t*)(train_image + 4) );
 
-	for ( int i = 0; i < case_count; i++ )
+	for (int i = 0; i < case_count; i++)
 	{
 		case_t c {tensor_t<float>( 28, 28, 1 ), tensor_t<float>( 10, 1, 1 )};
 
@@ -110,6 +107,8 @@ vector<case_t> read_test_cases()
 
 int mainExample1()
 {
+	printf("simple_cnn Example 1 \n");
+
 	vector<case_t> cases = read_test_cases();
 
 	vector<layer_t*> layers;
@@ -129,7 +128,7 @@ int mainExample1()
 	float amse = 0;
 	int ic = 0;
 
-	for ( long ep = 0; ep < 100000; )
+	for (long ep = 0; ep < 100000;)
 	{
 
 		for ( case_t& t : cases )
@@ -156,7 +155,7 @@ int mainExample1()
 
 	while ( true )
 	{
-		uint8_t * data = read_file( "test.ppm" );
+		uint8_t * data = read_file("data/test.ppm");
 
 		if ( data )
 		{
@@ -254,7 +253,7 @@ int mainExample2() {
 	// end:
 
 	while (true) {
-		uint8_t * data = read_file("test.ppm");
+		uint8_t * data = read_file("data/test.ppm");
 
 		if (data) {
 			uint8_t * usable = data;
