@@ -1,6 +1,9 @@
 # Build folders
 /Debug/
 
+# Data folder
+/data/mnist
+
 # Prerequisites
 *.d
 
