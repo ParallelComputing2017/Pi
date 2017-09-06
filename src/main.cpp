@@ -20,9 +20,6 @@ typedef std::chrono::duration<float> fsec;
 using namespace std;
 
 #include "pi/pi.hpp"
-#include "NeuralNetwork/NeuralNetwork.hpp"
-
-#include "../lib/simple_cnn/Example_MNIST/example.h"
 
 void writeCSV(string program, int threads, float runningTime);
 
@@ -30,7 +27,7 @@ int main(int argc, char *argv[]) {
 
 	int threads = 4;
 	string self(argv[0]);
-	string program = "nn";
+	string program = "pi";
 
 	if (argc != 3) { // argc should be 3 for correct execution
 		printf("Usage: Posix <program_name> <num_threads> \n");
@@ -53,9 +50,6 @@ int main(int argc, char *argv[]) {
 
 			printf("Parallel OpenMP Pi: %f \n", Pi::openMP(threads));
 		}
-	} else {
-
-		printf("Neural Net: %i \n", mainExample());
 	}
 
 	// Timer

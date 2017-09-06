@@ -1,11 +1,10 @@
-# Posix
+# Pi
 
-Programs using POSIX Threads (Pthreads).
+Calculation of the number Pi using different parallel technologies.
+
+* Posix (pthreads)
+* OpenMP
 
 ## Requirements
 
-* Boost library ()
-
-## Neural Net
-
-It's based on David Miller video [Neural Net in C++ Tutorial](https://vimeo.com/19569529) and *huangzehao* source repository [SimpleNeuralNetwork](https://github.com/huangzehao/SimpleNeuralNetwork).
+* C++11 support
