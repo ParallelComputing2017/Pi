@@ -18,17 +18,17 @@ using namespace std;
 
 #include "pi/pi.hpp"
 
-void writeCSV(string program, int threads, string runningTime);
+void printLog(string mode, cpu_timer timer, double result);
 
 int main(int argc, char *argv[]) {
 
-	int threads = 8;
+	int threads = 4;
 	string self(argv[0]);
 	string mode = "all";
 
 	if (argc != 3) { // argc should be 3 for correct execution
 		printf("Usage: Posix <mode_name> <num_threads>\n");
-		printf("\tModes: all, posix, openmp, sequential \n");
+		printf("\tModes: all, posix, openmp, single \n");
 	} else {
 		mode = argv[1];
 		threads = atoi(argv[2]);
@@ -47,8 +47,7 @@ int main(int argc, char *argv[]) {
 		double pi = Pi::posix(threads);
 		timer.stop();
 
-		printf("Posix.\t time: %s\t result: %f \n",
-				timer.format(3, "%ws ").c_str(), pi);
+		printLog("Posix", timer, pi);
 	}
 	if (mode.compare("openmp") == 0 || all) {
 
@@ -56,38 +55,25 @@ int main(int argc, char *argv[]) {
 		double pi = Pi::openMP(threads);
 		timer.stop();
 
-		printf("OpenMP\t time: %s\t result: %f \n",
-				timer.format(3, "%ws").c_str(), pi);
+		printLog("OpenMP", timer, pi);
 
 	}
-	if (mode.compare("sequential") == 0 || all) {
+	if (mode.compare("single") == 0) {
 
 		timer.start();
 		double pi = Pi::sequential();
 		timer.stop();
 
-		printf("Simple.\t time: %s\t result: %f \n",
-				timer.format(3, "%ws").c_str(), pi);
+		printLog("Single", timer, pi);
 	}
-
-
-	writeCSV(mode, threads, timer.format(3, "%ws"));
 
 	return 0;
 
 }
 
-void writeCSV(string program, int threads, string seconds_runningTime) {
+void printLog(string mode, cpu_timer timer, double result) {
 
-	ofstream myfile;
-
-	myfile.open("./log/pi.csv", std::ofstream::app);
-
-	myfile << "\"" + program + "\"";
-	myfile << "; " + to_string(threads);
-	myfile << "; " + seconds_runningTime;
-	myfile << "\n";
-
-	myfile.close();
+	printf("%s\t time: %s\t result: %f \n", mode.c_str(),
+			timer.format(3, "%ws").c_str(), result);
 }
 

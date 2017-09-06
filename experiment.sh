@@ -2,6 +2,6 @@
 
 for t in {1..16}
 do
-	time -p ./Debug/Posix pi $t
+	./Debug/Pi all $t
 	printf "\n"
 done

@@ -7,5 +7,5 @@ Calculation of the number Pi using different parallel technologies.
 
 ## Requirements
 
-* C++11 support
-* [Boost Timer](http://www.boost.org/doc/libs/1_65_0/libs/timer/doc/index.html)
+* C++ 11 support
+* [Boost Timer](http://www.boost.org/doc/libs/1_62_0/libs/timer/doc/index.html)

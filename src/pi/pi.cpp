@@ -45,8 +45,6 @@ double Pi::posix(int numThreads) {
 	NUM_THREADS = numThreads;
 	piTotal = new double[NUM_THREADS];
 
-	printf("Start Parallel PI (NUM_THREADS = %i)\n", NUM_THREADS);
-
 	pthread_t threads[NUM_THREADS];
 	int threadId[NUM_THREADS], i, *retval;
 
