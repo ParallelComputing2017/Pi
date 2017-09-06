@@ -1,76 +1,91 @@
 /*
  * main.cpp
  *
- *  Created on: 10/08/2017
- *      Author: juan
+ *
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <iostream>
-#include <chrono>
+#include <boost/timer/timer.hpp>
 
 #include <iostream>
 #include <fstream>
 
-typedef std::chrono::high_resolution_clock Clock;
-typedef std::chrono::milliseconds ms;
-typedef std::chrono::duration<float> fsec;
+using namespace boost::timer;
 
 using namespace std;
 
 #include "pi/pi.hpp"
 
-void writeCSV(string program, int threads, float runningTime);
+void writeCSV(string program, int threads, string runningTime);
 
 int main(int argc, char *argv[]) {
 
-	int threads = 4;
+	int threads = 8;
 	string self(argv[0]);
-	string program = "pi";
+	string mode = "all";
 
 	if (argc != 3) { // argc should be 3 for correct execution
-		printf("Usage: Posix <program_name> <num_threads> \n");
-		printf("\t num_threads = 0 for sequential mode \n");
-
+		printf("Usage: Posix <mode_name> <num_threads>\n");
+		printf("\tModes: all, posix, openmp, sequential \n");
 	} else {
-		program = argv[1];
+		mode = argv[1];
 		threads = atoi(argv[2]);
 	}
 
-	auto t1 = Clock::now();
+	cpu_timer timer;
 
 	printf("Using %i threads \n", threads);
 
-	if (program.compare("pi") == 0) {
-		if (threads == 0) {
-			printf("Sequential Pi: %f \n", Pi::sequential());
-		} else {
-			printf("Parallel Posix Pi: %f \n", Pi::posix(threads));
 
-			printf("Parallel OpenMP Pi: %f \n", Pi::openMP(threads));
-		}
+	bool all = (mode.compare("all") == 0);
+
+	if (mode.compare("posix") == 0 || all) {
+
+		timer.start();
+		double pi = Pi::posix(threads);
+		timer.stop();
+
+		printf("Posix.\t time: %s\t result: %f \n",
+				timer.format(3, "%ws ").c_str(), pi);
+	}
+	if (mode.compare("openmp") == 0 || all) {
+
+		timer.start();
+		double pi = Pi::openMP(threads);
+		timer.stop();
+
+		printf("OpenMP\t time: %s\t result: %f \n",
+				timer.format(3, "%ws").c_str(), pi);
+
+	}
+	if (mode.compare("sequential") == 0 || all) {
+
+		timer.start();
+		double pi = Pi::sequential();
+		timer.stop();
+
+		printf("Simple.\t time: %s\t result: %f \n",
+				timer.format(3, "%ws").c_str(), pi);
 	}
 
-	// Timer
-	auto t2 = Clock::now();
-	fsec fs = t2 - t1;
 
-	writeCSV(program, threads, fs.count());
+	writeCSV(mode, threads, timer.format(3, "%ws"));
 
 	return 0;
 
 }
 
-void writeCSV(string program, int threads, float seconds_runningTime) {
+void writeCSV(string program, int threads, string seconds_runningTime) {
 
 	ofstream myfile;
 
-	myfile.open("./log/" + program + ".csv", std::ofstream::app);
+	myfile.open("./log/pi.csv", std::ofstream::app);
 
 	myfile << "\"" + program + "\"";
 	myfile << "; " + to_string(threads);
-	myfile << "; " + to_string(seconds_runningTime);
+	myfile << "; " + seconds_runningTime;
 	myfile << "\n";
 
 	myfile.close();
