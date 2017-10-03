@@ -19,6 +19,8 @@ public:
 
 	static double openMP(int numThreads);
 
+	static double cuda(int numThreads);
+
 private:
 
 };

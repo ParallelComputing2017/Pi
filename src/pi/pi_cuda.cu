@@ -14,7 +14,6 @@
 
 //#define BLOCKS  512
 #define NUMTHREADS 1024
-#define ITERATIONS 2e09
 
 /**
  * CUDA Kernel Device code
@@ -55,10 +54,9 @@ __global__ void calculatePi(double *piTotal, long int iterations, int totalThrea
 /******************************************************************************
  * Host main routine
  */
-double cuda()
+double pi_cuda(long int iterations)
 {   
     int blocksPerGrid, threadsPerBlock, i, size;
-    long int iterations;
     int totalThreads;
     double *h_pitotal, *d_pitotal;
     
@@ -91,7 +89,7 @@ double cuda()
     // Lanzar KERNEL
     threadsPerBlock = NUMTHREADS/blocksPerGrid;
     totalThreads = blocksPerGrid * threadsPerBlock;
-    iterations = ITERATIONS;
+
     printf("CUDA kernel launch with %d blocks of %d threads Total: %i\n", blocksPerGrid, threadsPerBlock, totalThreads  );
     calculatePi<<<blocksPerGrid, threadsPerBlock>>>(d_pitotal, iterations, totalThreads);
     err = cudaGetLastError();

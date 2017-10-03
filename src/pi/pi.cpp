@@ -9,6 +9,7 @@
 #include <pthread.h>
 
 #include "pi.hpp"
+#include "pi_cuda.cuh"
 
 /* Global variables */
 int NUM_THREADS = 1;
@@ -92,6 +93,10 @@ double Pi::openMP(int numThreads) {
 	}
 
 	return pi;
+}
+
+double Pi::cuda(int numThreads) {
+	return pi_cuda(ITERATIONS);
 }
 
 

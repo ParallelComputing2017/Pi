@@ -17,7 +17,6 @@ using namespace boost::timer;
 using namespace std;
 
 #include "pi/pi.hpp"
-#include "pi/pi_cuda.cuh"
 
 void printLog(string mode, cpu_timer timer, double result);
 
@@ -62,7 +61,7 @@ int main(int argc, char *argv[]) {
 	if (mode.compare("cuda") == 0 || all) {
 
 			timer.start();
-			double pi = cuda();
+			double pi = Pi::cuda(threads);
 			timer.stop();
 
 			printLog("CUDA", timer, pi);
