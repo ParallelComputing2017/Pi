@@ -1,8 +1,8 @@
 # Build folders
 /Debug/
 
-# Data folder
-/data/mnist
+# Eclipse settings
+/.settings
 
 # Prerequisites
 *.d
