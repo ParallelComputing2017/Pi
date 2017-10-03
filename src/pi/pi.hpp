@@ -9,7 +9,7 @@
 #define PI_PI_HPP_
 
 /* Constants */
-#define ITERATIONS 1e9
+#define ITERATIONS 2e9
 
 class Pi {
 public:
